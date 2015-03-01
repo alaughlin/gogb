@@ -5,13 +5,12 @@ var (
 	pc                             uint16 // program counter
 	sp                             uint16 // stack pointer
 	ram                            []uint8
-	vram                           []uint8
 )
 
 type GameBoy struct{}
 
 func (gb *GameBoy) reset() {
-	ram = make([]uint8, 8192)
+	ram = make([]uint8, 65536)
 	pc = 0x100
 	sp = 0xFFFE
 }
