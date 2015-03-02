@@ -1,6 +1,6 @@
 package main
 
-/* 16bit LD */
+/* 16bit Load/Store/Move */
 /* opcode, asm command */
 
 // 01 LD BC,d16

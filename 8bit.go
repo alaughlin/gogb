@@ -1,12 +1,12 @@
 package main
 
-/* 8bit LD */
+/* 8bit Load/Store/Move */
 /* opcode, asm command */
 
 // 02 LD (BC),A
 func LDaBCA() {
 	bc := uint16(_b<<8) + uint16(_c)
-	ram[bc] = _a
+	mmu.write(bc, _a)
 	pc++
 }
 
@@ -19,7 +19,7 @@ func LDBd8(d uint8) {
 // 0A LD A,(BC)
 func LDAaBC() {
 	bc := uint16(_b<<8) + uint16(_c)
-	_a = ram[bc]
+	_a = mmu.read(bc)
 	pc++
 }
 
@@ -32,7 +32,7 @@ func LDCd8(d uint8) {
 // 12 LD (DE),A
 func LDaDEA() {
 	de := uint16(_d<<8) + uint16(_e)
-	ram[de] = _a
+	mmu.write(de, _a)
 	pc++
 }
 
@@ -45,7 +45,7 @@ func LDDd8(d uint8) {
 // 1A LD A,(DE)
 func LDAaDE() {
 	de := uint16(_d<<8) + uint16(_e)
-	_a = ram[de]
+	_a = mmu.read(de)
 	pc++
 }
 
@@ -58,8 +58,8 @@ func LDEd8(d uint8) {
 // 22 LDI (HL),A
 func LDIaHLA() {
 	hl := uint16(_h<<8) + uint16(_l)
-	ram[hl] = _a
-	ram[hl]++
+	mmu.write(hl, _a)
+	mmu.incr(hl)
 	pc++
 }
 
@@ -72,8 +72,8 @@ func LDHd8(d uint8) {
 // 2A LDI A,(HL)
 func LDIAaHL() {
 	hl := uint16(_h<<8) + uint16(_l)
-	_a = ram[hl]
-	ram[hl]++
+	_a = mmu.read(hl)
+	mmu.incr(hl)
 	pc++
 }
 
@@ -86,23 +86,23 @@ func LDLd8(d uint8) {
 // 32 LDD (HL),A
 func LDDaHLA() {
 	hl := uint16(_h<<8) + uint16(_l)
-	ram[hl] = _a
-	ram[hl]--
+	mmu.write(hl, _a)
+	mmu.decr(hl)
 	pc++
 }
 
 // 36 LD (HL),d8
 func LDaHLd8(d uint8) {
 	hl := uint16(_h<<8) + uint16(_l)
-	ram[hl] = d
+	mmu.write(hl, d)
 	pc += 2
 }
 
 // 3A LDD A,(HL)
 func LDDAaHL() {
 	hl := uint16(_h<<8) + uint16(_l)
-	_a = ram[hl]
-	ram[hl]--
+	_a = mmu.read(hl)
+	mmu.decr(hl)
 	pc++
 }
 
@@ -151,7 +151,7 @@ func LDBL() {
 // 46 LD B,(HL)
 func LDBaHL() {
 	hl := uint16(_h<<8) + uint16(_l)
-	_b = ram[hl]
+	_b = mmu.read(hl)
 	pc++
 }
 
@@ -200,7 +200,7 @@ func LDCL() {
 // 4E LD C,(HL)
 func LDCaHL() {
 	hl := uint16(_h<<8) + uint16(_l)
-	_c = ram[hl]
+	_c = mmu.read(hl)
 	pc++
 }
 
@@ -249,7 +249,7 @@ func LDDL() {
 // 56 LD D,(HL)
 func LDDaHL() {
 	hl := uint16(_h<<8) + uint16(_l)
-	_d = ram[hl]
+	_d = mmu.read(hl)
 	pc++
 }
 
@@ -298,7 +298,7 @@ func LDEL() {
 // 5E LD E,(HL)
 func LDEaHL() {
 	hl := uint16(_h<<8) + uint16(_l)
-	_e = ram[hl]
+	_e = mmu.read(hl)
 	pc++
 }
 
@@ -347,7 +347,7 @@ func LDHL() {
 // 66 LD H,(HL)
 func LDHaHL() {
 	hl := uint16(_h<<8) + uint16(_l)
-	_h = ram[hl]
+	_h = mmu.read(hl)
 	pc++
 }
 
@@ -396,7 +396,7 @@ func LDLL() {
 // 6E LD L,(HL)
 func LDLaHL() {
 	hl := uint16(_h<<8) + uint16(_l)
-	_l = ram[hl]
+	_l = mmu.read(hl)
 	pc++
 }
 
@@ -409,48 +409,48 @@ func LDLA() {
 // 70 LD (HL),B
 func LDaHLB() {
 	hl := uint16(_h<<8) + uint16(_l)
-	ram[hl] = _b
+	mmu.write(hl, _b)
 	pc++
 }
 
 // 71 LD (HL),C
 func LDaHLC() {
 	hl := uint16(_h<<8) + uint16(_l)
-	ram[hl] = _c
+	mmu.write(hl, _c)
 }
 
 // 72 LD (HL),D
 func LDaHLD() {
 	hl := uint16(_h<<8) + uint16(_l)
-	ram[hl] = _d
+	mmu.write(hl, _d)
 	pc++
 }
 
 // 73 LD (HL),E
 func LDaHLE() {
 	hl := uint16(_h<<8) + uint16(_l)
-	ram[hl] = _e
+	mmu.write(hl, _e)
 	pc++
 }
 
 // 74 LD (HL),H
 func LDaHLH() {
 	hl := uint16(_h<<8) + uint16(_l)
-	ram[hl] = _h
+	mmu.write(hl, _h)
 	pc++
 }
 
 // 75 LD (HL),L
 func LDaHLL() {
 	hl := uint16(_h<<8) + uint16(_l)
-	ram[hl] = _l
+	mmu.write(hl, _l)
 	pc++
 }
 
 // 77 LD (HL),A
 func LDaHLA() {
 	hl := uint16(_h<<8) + uint16(_l)
-	ram[hl] = _a
+	mmu.write(hl, _a)
 	pc++
 }
 
@@ -493,7 +493,7 @@ func LDAL() {
 // 7E LD A,(HL)
 func LDAaHL() {
 	hl := uint16(_h<<8) + uint16(_l)
-	_a = ram[hl]
+	_a = mmu.read(hl)
 	pc++
 }
 
@@ -505,36 +505,44 @@ func LDAA() {
 
 // E0 LDH (a8),A
 func LDHa8A(a uint8) {
-	ram[a] = _a
+	mmu.write(0xFF00+uint16(a), _a)
 	pc += 2
 }
 
 // E2 LD (C), A
 func LDaCA() {
-	ram[_c] = _a
+	mmu.write(0xFF00+uint16(_c), _a)
 	pc++
 }
 
 // EA LD (a16),A
 func LDa16A(a uint16) {
-	ram[a] = _a
+	mmu.write(a, _a)
 	pc += 3
 }
 
 // F0 LDH A,(a8)
 func LDHAa8(a uint8) {
-	_a = ram[a]
+	_a = mmu.read(0xFF00 + uint16(a))
 	pc += 2
 }
 
 // F2 LD A,(C)
 func LDAmC() {
-	_a = ram[_c]
+	_a = mmu.read(0xFF00 + uint16(_c))
 	pc++
 }
 
 // FA LD A,(a16)
 func LDAa16(a uint16) {
-	_a = ram[a]
+	_a = mmu.read(a)
 	pc += 3
+}
+
+/* 8bit Arithmetic/Logical */
+/* opcode, asm command */
+
+// 04 INC B
+func INCB() {
+	_b++
 }
