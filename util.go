@@ -1,19 +1,19 @@
 package main
 
-// pops n bytes from wram
+// pops n bytes from zram
 func pop(n uint16) []uint8 {
 	res := make([]uint8, n)
 	for i := uint16(0); i < n; i++ {
-		res = append(res, wram[(sp+i)-0xFF80])
+		res = append(res, zram[(sp+i)-0xFF80])
 		sp++
 	}
 	return res
 }
 
-// pushes n bytes into wram
+// pushes n bytes into zram
 func push(vals ...uint8) {
 	for val := range vals {
-		wram[sp-0xFF80] = uint8(val)
+		zram[sp-0xFF80] = uint8(val)
 		sp--
 	}
 }
