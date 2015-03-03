@@ -115,3 +115,36 @@ func LDSPHL() {
 	pc++
 	_m, _t = 2, 8
 }
+
+/* 16bit Arithmetic/Logical */
+/* opcode, asm command */
+
+// 03 INC BC
+func INCBC() {
+	_b++
+	_c++
+	pc++
+	_m, _t = 2, 8
+}
+
+// 13 INC DE
+func INCDE() {
+	_d++
+	_e++
+	pc++
+	_m, _t = 2, 8
+}
+
+// 23 INC HL
+func INCHL() {
+	_h++
+	_l++
+	pc++
+	_m, _t = 2, 8
+}
+
+// 33 INC SP
+func INCSP() {
+	sp++
+	_m, _t = 2, 8
+}

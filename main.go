@@ -1,9 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"time"
-)
+import "fmt"
 
 var (
 	gb  *GameBoy
@@ -16,9 +13,8 @@ func main() {
 	gb.reset()
 	gb.loadGame()
 
-	for {
+	for i := 0; i < 100; i++ {
 		fmt.Println(mmu.read(pc))
 		gb.execute()
-		time.Sleep(10)
 	}
 }

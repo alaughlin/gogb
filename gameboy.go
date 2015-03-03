@@ -48,12 +48,16 @@ func executeOpcode(opcode uint8) {
 		NOP()
 	case 0x01:
 		LDBCd16(uint16(mmu.read(pc+1)<<8) + uint16(mmu.read(pc+2)))
+	case 0x03:
+		INCBC()
 	case 0x04:
 		INCB()
 	case 0x08:
 		LDa16SP(uint16(mmu.read(pc+1)<<8) + uint16(mmu.read(pc+2)))
 	case 0x11:
 		LDDEd16(uint16(mmu.read(pc+1)<<8) + uint16(mmu.read(pc+2)))
+	case 0x13:
+		INCDE()
 	case 0x18:
 		JRr8(mmu.read(pc + 1))
 	case 0x20:
@@ -62,6 +66,8 @@ func executeOpcode(opcode uint8) {
 		LDHLd16(uint16(mmu.read(pc+1)<<8) + uint16(mmu.read(pc+2)))
 	case 0x22:
 		LDIaHLA()
+	case 0x23:
+		INCHL()
 	case 0x26:
 		LDHd8(mmu.read(pc + 1))
 	case 0x28:
@@ -76,6 +82,8 @@ func executeOpcode(opcode uint8) {
 		LDSPd16(uint16(mmu.read(pc+1)<<8) + uint16(mmu.read(pc+2)))
 	case 0x32:
 		LDDaHLA()
+	case 0x33:
+		INCSP()
 	case 0x36:
 		LDaHLd8(mmu.read(pc + 1))
 	case 0x38:
