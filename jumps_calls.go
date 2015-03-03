@@ -165,7 +165,7 @@ func JPNCa16(a uint16) {
 // D4 CALL NC,a16
 func CALLNCa16(a uint16) {
 	if _f&(1<<4) == 0 {
-		push(uint8(pc + 3))
+		push(uint8(pc+3)>>8, uint8(pc+3))
 		pc = a
 	} else {
 		pc += 3
@@ -210,7 +210,7 @@ func JPCa16(a uint16) {
 // DC CALL C,a16
 func CALLCa16(a uint16) {
 	if _f&(1<<4) > 0 {
-		push(uint8(pc + 3))
+		push(uint8(pc+3)>>8, uint8(pc+3))
 		pc = a
 	} else {
 		pc += 3
