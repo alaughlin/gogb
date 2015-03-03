@@ -629,6 +629,7 @@ func LDAa16(a uint16) {
 /* opcode, asm command */
 
 // 04 INC B
+// TODO
 func INCB() {
 	_b++
 }

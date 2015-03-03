@@ -42,18 +42,40 @@ func (gb *GameBoy) execute() {
 	switch opcode {
 	case 0x00:
 		NOP()
+	case 0x01:
+		LDBCd16(uint16(mmu.read(pc+1)<<8) + uint16(mmu.read(pc+2)))
+	case 0x04:
+		INCB()
+	case 0x08:
+		LDa16SP(uint16(mmu.read(pc+1)<<8) + uint16(mmu.read(pc+2)))
+	case 0x11:
+		LDDEd16(uint16(mmu.read(pc+1)<<8) + uint16(mmu.read(pc+2)))
+	case 0x18:
+		JRr8(mmu.read(pc + 1))
+	case 0x20:
+		JRNZr8(mmu.read(pc + 1))
+	case 0x21:
+		LDHLd16(uint16(mmu.read(pc+1)<<8) + uint16(mmu.read(pc+2)))
 	case 0x22:
 		LDIaHLA()
 	case 0x26:
 		LDHd8(mmu.read(pc + 1))
+	case 0x28:
+		JRZr8(mmu.read(pc + 1))
 	case 0x2A:
 		LDIAaHL()
 	case 0x2E:
 		LDLd8(mmu.read(pc + 1))
+	case 0x30:
+		JRNCr8(mmu.read(pc + 1))
+	case 0x31:
+		LDSPd16(uint16(mmu.read(pc+1)<<8) + uint16(mmu.read(pc+2)))
 	case 0x32:
 		LDDaHLA()
 	case 0x36:
 		LDaHLd8(mmu.read(pc + 1))
+	case 0x38:
+		JRCr8(mmu.read(pc + 1))
 	case 0x3A:
 		LDDAaHL()
 	case 0x3E:
@@ -184,16 +206,36 @@ func (gb *GameBoy) execute() {
 		LDAaHL()
 	case 0x7F:
 		LDAA()
+	case 0xC1:
+		POPBC()
+	case 0xC5:
+		PUSHBC()
+	case 0xD1:
+		POPDE()
+	case 0xD5:
+		PUSHDE()
 	case 0xE0:
 		LDHa8A(mmu.read(pc + 1))
+	case 0xE1:
+		POPHL()
 	case 0xE2:
 		LDaCA()
+	case 0xE5:
+		PUSHHL()
 	case 0xEA:
 		LDa16A(uint16(mmu.read(pc+2)<<8) + uint16(mmu.read(pc+1)))
 	case 0xF0:
 		LDHAa8(mmu.read(pc + 1))
+	case 0xF1:
+		POPAF()
 	case 0xF2:
 		LDAmC()
+	case 0xF5:
+		PUSHAF()
+	case 0xF8:
+		LDHLSPpr8(mmu.read(pc + 1))
+	case 0xF9:
+		LDSPHL()
 	case 0xFA:
 		LDAa16(uint16(mmu.read(pc+2)<<8) + uint16(mmu.read(pc+1)))
 	}
